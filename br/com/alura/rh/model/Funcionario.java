@@ -8,42 +8,13 @@ import br.com.alura.rh.ValidacaoException;
 
 public class Funcionario {
 
-	private String nome;
-	private String cpf;
+	private DadosPessoais dadosPessoais;
 	private Cargo cargo;
-	private BigDecimal salario;
 	private LocalDate dataUltimoReajuste;
 
-	public Funcionario(String nome, String cpf, Cargo cargo, BigDecimal salario) {
-		this.nome = nome;
-		this.cpf = cpf;
+	public Funcionario(String nome, String cpf, BigDecimal salario, Cargo cargo) {
+		this.dadosPessoais = new DadosPessoais(nome, cpf, salario);
 		this.cargo = cargo;
-		this.salario = salario;
-	}
-
-	public void reajustarSalario(BigDecimal aumento) {
-		BigDecimal percentualReajuste = aumento.divide(salario, RoundingMode.HALF_UP);
-		if (percentualReajuste.compareTo(new BigDecimal("0.4")) > 0) {
-			throw new ValidacaoException("Reajuste nao pode ser superior a 40% do salario!");
-		}
-		this.salario = this.salario.add(aumento);
-		this.dataUltimoReajuste = LocalDate.now();
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
 	}
 
 	public Cargo getCargo() {
@@ -54,12 +25,12 @@ public class Funcionario {
 		this.cargo = cargo;
 	}
 
-	public BigDecimal getSalario() {
-		return salario;
+	public DadosPessoais getDadosPessoais() {
+		return this.dadosPessoais;
 	}
 
-	public void setSalario(BigDecimal salario) {
-		this.salario = salario;
+	public void setDadosPessoais(DadosPessoais dadosPessoais) {
+		this.dadosPessoais = dadosPessoais;
 	}
 
 	public LocalDate getDataUltimoReajuste() {
@@ -71,7 +42,11 @@ public class Funcionario {
 	}
 
 	public void atualizarSalario(BigDecimal novoSalario) {
-		this.salario = novoSalario;
+		this.dadosPessoais.setSalario(novoSalario);
 		this.dataUltimoReajuste = LocalDate.now();
+	}
+
+	public void promover(Cargo novoCargo) {
+		this.cargo = novoCargo;
 	}
 }
